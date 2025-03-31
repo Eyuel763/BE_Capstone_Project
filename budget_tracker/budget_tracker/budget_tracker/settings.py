@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'wallets',
     'transactions',
+    'budgets',
     'rest_framework.authtoken',
 ]
 

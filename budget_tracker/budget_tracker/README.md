@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The Personal Budget Tracker API is a Django REST Framework backend designed to help users manage their finances effectively. It provides endpoints for user authentication, wallet management, transaction tracking, and category management. This API is built to support a web-based application that allows users to monitor their income and expenses, and achieve better financial planning. 
+The Personal Budget Tracker API is a Django REST Framework backend designed to help users manage their finances effectively. It provides endpoints for user authentication, wallet management, transaction tracking, category management, and budget tracking. This API is built to support a web-based application that allows users to monitor their income and expenses, and achieve better financial planning.
 
 ## Features
 
@@ -14,21 +14,28 @@ The API currently supports the following core features:
 * **Wallet Management:**
     * Creation and management of multiple wallets per user (e.g., Checking, Savings).
     * Wallet attributes:
-        * Name 
-        * Type 
-        * Current balance 
+        * Name
+        * Type
+        * Current balance
 * **Transaction Tracking:**
     * Recording of income and expense transactions.
     * Transaction details:
-        * Date 
-        * Amount 
-        * Description 
-        * Category (e.g., Groceries, Rent) 
-        * Associated Wallet 
-        * Transaction Type (Income or Expense) 
+        * Date
+        * Amount
+        * Description
+        * Category (e.g., Groceries, Rent)
+        * Associated Wallet
+        * Transaction Type (Income or Expense)
 * **Expense Categories:**
     * Management of transaction categories.
     * Customizable categories per user.
+* **Budget Tracking:**
+    * Creation and management of budgets per category and month.
+    * Budget details:
+        * Amount
+        * Category
+        * Month
+        * Optional associated wallet
 
 ## Technology Stack
 
@@ -53,8 +60,8 @@ The API currently supports the following core features:
 
     ```bash
     python -m venv venv
-    venv\Scripts\activate  # On Windows
-    source venv/bin/activate  # On macOS/Linux
+    venv\Scripts\activate # On Windows
+    source venv/bin/activate # On macOS/Linux
     ```
 
 4.  **Install dependencies:**
@@ -113,6 +120,17 @@ The API currently supports the following core features:
 * `PUT /api/categories/{id}/` - Update a category.
 * `DELETE /api/categories/{id}/` - Delete a category.
 
+### Budgets API
+
+* `GET /api/budgets/` - List all budgets for the user.
+* `POST /api/budgets/` - Create a new budget.
+* `GET /api/budgets/{id}/` - Fetch budget details.
+* `PUT /api/budgets/{id}/` - Update budget details.
+* `DELETE /api/budgets/{id}/` - Delete a budget.
+* `GET /api/budgets/?category_id={id}` - Filter budgets by category.
+* `GET /api/budgets/?wallet_id={id}` - Filter budgets by wallet.
+* `GET /api/budgets/?month=YYYY-MM-DD` - Filter budgets by month.
+
 ## Models
 
 ### Users App
@@ -120,19 +138,19 @@ The API currently supports the following core features:
 * **Custom User Model:**
     * Extends Django's `AbstractUser`.
     * Fields: `username`, `email`, `password`.
-    * Relationships: One-to-Many with Transactions and Wallets.
+    * Relationships: One-to-Many with Transactions, Wallets, and Budgets.
     * Constraints: `email` must be unique.
 
 ### Wallets App
 
 * **Wallet Model:**
     * Fields:
-        * `name` (CharField) 
-        * `balance` (DecimalField) 
-        * `type` (CharField) 
-        * `created_at` (Timestamp) 
-        * `user` (ForeignKey to User) 
-    * Relationships: One-to-Many with Transactions.
+        * `name` (CharField)
+        * `balance` (DecimalField)
+        * `type` (CharField)
+        * `created_at` (Timestamp)
+        * `user` (ForeignKey to User)
+    * Relationships: One-to-Many with Transactions and Budgets.
     * Constraints:
         * Each wallet belongs to a single user.
         * `balance` >= 0.
@@ -141,13 +159,13 @@ The API currently supports the following core features:
 
 * **Transaction Model:**
     * Fields:
-        * `amount` (DecimalField) 
-        * `type` (CharField - Income/Expense) 
-        * `category` (ForeignKey to Category) 
-        * `wallet` (ForeignKey to Wallet) 
-        * `date` (DateField) 
-        * `description` (TextField) 
-        * `user` (ForeignKey to User) 
+        * `amount` (DecimalField)
+        * `type` (CharField - Income/Expense)
+        * `category` (ForeignKey to Category)
+        * `wallet` (ForeignKey to Wallet)
+        * `date` (DateField)
+        * `description` (TextField)
+        * `user` (ForeignKey to User)
     * Relationships: Many-to-One with Category, Wallet, and User.
     * Constraints:
         * `amount` > 0.
@@ -155,29 +173,40 @@ The API currently supports the following core features:
 
 * **Category Model:**
     * Fields:
-        * `name` (CharField) 
-        * `user` (ForeignKey to User) 
-    * Relationships: Many-to-One with Transactions.
+        * `name` (CharField)
+        * `user` (ForeignKey to User)
+    * Relationships: Many-to-One with Transactions and Budgets.
     * Constraints: Category name unique per user.
+
+### Budgets App
+
+* **Budget Model:**
+    * Fields:
+        * `amount` (DecimalField)
+        * `category` (ForeignKey to Category)
+        * `wallet` (ForeignKey to Wallet, optional)
+        * `month` (DateField)
+        * `user` (ForeignKey to User)
+    * Relationships: Many-to-One with Category, Wallet, and User.
+    * Constraints:
+        * `amount` > 0.
+        * Unique budget per category per month per user.
 
 ## Current Status
 
-The API currently supports user authentication, wallet management, transaction tracking, and category management.
+The API currently supports user authentication, wallet management, transaction tracking, category management, and budget tracking.
 
 * User registration and login are implemented.
 * Users can create, retrieve, update, and delete wallets.
 * Users can record income and expense transactions, categorized by user-defined categories.
 * Wallet balances are automatically updated upon transaction creation and deletion.
+* Users can create, retrieve, update, and delete budgets.
+* Users can filter budgets by category, wallet, and month.
 
 ## Future Enhancements
 
-* Budget Goals: Implement functionality for users to set budget limits. 
-* Date Filtering: Add endpoints to filter transactions by date ranges. 
-* Dashboard: Develop endpoints for financial summaries and visualizations. 
-* Testing: Implement comprehensive test suites.
-* Documentation: Expand API documentation with detailed request/response examples.
+* Build Dashboards and Visualizations for User Insights
 
 ## Contributing
 
 Contributions are welcome! Please fork the repository and submit a pull request with your changes.
-
