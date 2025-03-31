@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'users',
     'wallets',
     'transactions',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.CustomUser'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated', 
+    ],
+}
