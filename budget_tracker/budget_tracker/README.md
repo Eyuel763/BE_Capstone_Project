@@ -96,7 +96,7 @@ The API currently supports the following core features:
 * `POST /api/users/register/` - Register a new user.
 * `POST /api/users/login/` - Log in an existing user.
 
-        JSON:
+        JSON: (Example login)
             {
             "username": "testuser_check",
             "password": "SecurePass123!"
@@ -111,12 +111,19 @@ The API currently supports the following core features:
 * `DELETE /api/wallets/{id}/` - Delete a wallet (if no transactions exist).
 * `PUT /api/wallets/{id}/update_balance/` - Update the balance of a specific wallet.
 
-    JSON: (Example)
+    JSON: (Example - Create new wallet)
 
 {
     "name": "New Wallet",
     "balance": 250.50,
     "type": "Cash"
+}
+
+JSON (Example - Update wallet detail)
+
+{
+    "name": "Updated Wallet Name",
+    "balance": 300.00
 }
 
 ### Transactions API
