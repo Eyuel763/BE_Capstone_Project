@@ -96,6 +96,12 @@ The API currently supports the following core features:
 * `POST /api/users/register/` - Register a new user.
 * `POST /api/users/login/` - Log in an existing user.
 
+        JSON:
+            {
+            "username": "testuser_check",
+            "password": "SecurePass123!"
+            }
+
 ### Wallets API
 
 * `GET /api/wallets/` - List all wallets for the user.
@@ -105,6 +111,14 @@ The API currently supports the following core features:
 * `DELETE /api/wallets/{id}/` - Delete a wallet (if no transactions exist).
 * `PUT /api/wallets/{id}/update_balance/` - Update the balance of a specific wallet.
 
+    JSON: (Example)
+
+{
+    "name": "New Wallet",
+    "balance": 250.50,
+    "type": "Cash"
+}
+
 ### Transactions API
 
 * `GET /api/transactions/` - List all transactions.
@@ -113,12 +127,30 @@ The API currently supports the following core features:
 * `DELETE /api/transactions/{id}/` - Delete a transaction.
 * `GET /api/transactions/?wallet_id={id}` - Filter transactions by wallet.
 
+JSON (Example)
+
+{
+    "amount": 25.75,
+    "type": "Expense",
+    "category": 1,  // Replace with an existing category ID
+    "wallet": 1,    // Replace with an existing wallet ID
+    "date": "2025-04-06",
+    "description": "Coffee"
+}
+
+
 ### Categories API
 
 * `GET /api/categories/` - List all categories.
 * `POST /api/categories/` - Create a new category.
 * `PUT /api/categories/{id}/` - Update a category.
 * `DELETE /api/categories/{id}/` - Delete a category.
+
+JSON (Example - create category)
+
+{
+    "name": "Utilities"
+}
 
 ### Budgets API
 
@@ -130,6 +162,14 @@ The API currently supports the following core features:
 * `GET /api/budgets/?category_id={id}` - Filter budgets by category.
 * `GET /api/budgets/?wallet_id={id}` - Filter budgets by wallet.
 * `GET /api/budgets/?month=YYYY-MM-DD` - Filter budgets by month.
+
+JSON(Example - create new Budget)
+
+{
+    "amount": 150.00,
+    "category": 2,  // Replace with an existing category ID
+    "month": "2025-05-01"
+}
 
 ## Models
 
